@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.repaso.viewmodel.ApiState;
 import com.example.repaso.R;
 import com.example.repaso.databinding.FragmentPeliculasBinding;
+import com.example.repaso.model.Pendiente;
+import com.example.repaso.repository.PendientesRepository;
 import com.example.repaso.viewmodel.PeliculasViewModel;
 
 public class PeliculasFragment extends Fragment {
@@ -22,6 +25,7 @@ public class PeliculasFragment extends Fragment {
     private FragmentPeliculasBinding binding;
     private PeliculasViewModel viewModel;
     private MovieAdapter adapter;
+    private PendientesRepository pendientesRepository;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,8 +36,21 @@ public class PeliculasFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        pendientesRepository = new PendientesRepository(requireContext());
+
         binding.listaVista.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new MovieAdapter(movie -> openDetail(movie.id));
+        adapter = new MovieAdapter(
+                movie -> openDetail(movie.id),
+                movie -> {
+                    Pendiente p = new Pendiente();
+                    p.id = movie.id;
+                    p.titulo = movie.getDisplayTitle();
+                    p.imagenPath = movie.poster_path != null ? movie.poster_path : movie.backdrop_path;
+                    p.tipo = "movie";
+                    pendientesRepository.insertar(p);
+                    Toast.makeText(requireContext(), "Añadido a pendientes", Toast.LENGTH_SHORT).show();
+                }
+        );
         binding.listaVista.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(PeliculasViewModel.class);

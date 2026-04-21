@@ -55,6 +55,19 @@
                     android:textSize="18sp"/>
             </LinearLayout>
 
+            <!-- Botón añadir a pendientes -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnAnadirPendiente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_margin="8dp"
+                android:src="@android:drawable/ic_input_add"
+                app:fabSize="mini"
+                app:backgroundTint="#FF6F00"
+                app:tint="#FFFFFF"
+                app:elevation="4dp"/>
+
         </FrameLayout>
 
     </androidx.cardview.widget.CardView>

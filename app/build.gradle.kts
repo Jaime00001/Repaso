@@ -37,6 +37,7 @@ android {
 
 dependencies {
     val navVersion = "2.9.5"
+    val roomVersion = "2.6.1"
     implementation("androidx.navigation:navigation-fragment:$navVersion")
     implementation("androidx.navigation:navigation-ui:$navVersion")
     implementation(libs.appcompat)
@@ -52,4 +53,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.3")
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.3")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 }

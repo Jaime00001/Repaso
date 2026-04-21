@@ -14,19 +14,35 @@
             android:id="@+id/action_menuFragment_to_detallesFragment"
             app:destination="@id/detallesFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/detallesFragment"
         android:name="com.example.repaso.view.DetallesFragment"
         android:label="fragment_detalles"
         tools:layout="@layout/fragment_detalles" />
+
     <fragment
         android:id="@+id/peliculasFragment"
         android:name="com.example.repaso.view.PeliculasFragment"
         android:label="fragment_peliculas"
         tools:layout="@layout/fragment_peliculas" />
+
     <fragment
         android:id="@+id/seriesFragment"
         android:name="com.example.repaso.view.SeriesFragment"
         android:label="fragment_series"
         tools:layout="@layout/fragment_series" />
+
+    <fragment
+        android:id="@+id/pendientesFragment"
+        android:name="com.example.repaso.view.PendientesFragment"
+        android:label="fragment_pendientes"
+        tools:layout="@layout/fragment_pendientes" />
+
+    <fragment
+        android:id="@+id/seguimientoFragment"
+        android:name="com.example.repaso.view.SeguimientoFragment"
+        android:label="fragment_seguimiento"
+        tools:layout="@layout/fragment_seguimiento" />
+
 </navigation>

@@ -23,12 +23,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
-        
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host);
         if (navHostFragment != null) {
             NavController navController = navHostFragment.getNavController();
-            AppBarConfiguration appBarConfig = new AppBarConfiguration.Builder(navController.getGraph()).build();
+
+            AppBarConfiguration appBarConfig = new AppBarConfiguration.Builder(
+                    R.id.menuFragment, R.id.pendientesFragment, R.id.seguimientoFragment
+            ).build();
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);
+
+            // Navegación manual del Bottom Nav
+            binding.bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_pendientes) {
+                    navController.navigate(R.id.pendientesFragment);
+                    return true;
+                } else if (id == R.id.nav_explorar) {
+                    navController.navigate(R.id.menuFragment);
+                    return true;
+                } else if (id == R.id.nav_seguimiento) {
+                    navController.navigate(R.id.seguimientoFragment);
+                    return true;
+                }
+                return false;
+            });
+
+            // Seleccionar "Explorar" por defecto
+            binding.bottomNav.setSelectedItemId(R.id.nav_explorar);
         }
     }
 
