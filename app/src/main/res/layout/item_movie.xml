@@ -56,17 +56,18 @@
             </LinearLayout>
 
             <!-- Botón añadir a pendientes -->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/btnAnadirPendiente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_gravity="top|end"
-                android:layout_margin="8dp"
+                android:layout_margin="10dp"
                 android:src="@android:drawable/ic_input_add"
-                app:fabSize="mini"
-                app:backgroundTint="#FF6F00"
-                app:tint="#FFFFFF"
-                app:elevation="4dp"/>
+                android:background="@drawable/bg_boton_anadir"
+                android:scaleType="centerInside"
+                android:padding="7dp"
+                android:elevation="6dp"
+                android:tint="#111111"/>
 
         </FrameLayout>
 

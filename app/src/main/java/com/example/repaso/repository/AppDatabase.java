@@ -7,13 +7,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.repaso.model.Pendiente;
+import com.example.repaso.model.Seguimiento;
 
-@Database(entities = {Pendiente.class}, version = 1)
+@Database(entities = {Pendiente.class, Seguimiento.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instancia;
 
     public abstract PendienteDao pendienteDao();
+    public abstract SeguimientoDao seguimientoDao();
 
     public static synchronized AppDatabase obtener(Context context) {
         if (instancia == null) {
@@ -21,7 +23,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     context.getApplicationContext(),
                     AppDatabase.class,
                     "repaso_db"
-            ).build();
+            ).fallbackToDestructiveMigration().build();
         }
         return instancia;
     }

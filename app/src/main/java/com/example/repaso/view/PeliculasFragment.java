@@ -45,7 +45,7 @@ public class PeliculasFragment extends Fragment {
                     Pendiente p = new Pendiente();
                     p.id = movie.id;
                     p.titulo = movie.getDisplayTitle();
-                    p.imagenPath = movie.poster_path != null ? movie.poster_path : movie.backdrop_path;
+                    p.imagenPath = movie.backdrop_path != null ? movie.backdrop_path : movie.poster_path;
                     p.tipo = "movie";
                     pendientesRepository.insertar(p);
                     Toast.makeText(requireContext(), "Añadido a pendientes", Toast.LENGTH_SHORT).show();

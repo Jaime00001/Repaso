@@ -1,18 +1,14 @@
 package com.example.repaso.view;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.repaso.R;
+import com.example.repaso.databinding.ItemPendienteBinding;
 import com.example.repaso.model.Pendiente;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +16,15 @@ import java.util.List;
 public class PendienteAdapter extends RecyclerView.Adapter<PendienteAdapter.Holder> {
 
     public interface OnEliminar { void eliminar(Pendiente p); }
+    public interface OnClick { void onClick(Pendiente p); }
 
     private List<Pendiente> list = new ArrayList<>();
-    private OnEliminar listener;
+    private OnEliminar eliminarListener;
+    private OnClick clickListener;
 
-    public PendienteAdapter(OnEliminar listener) {
-        this.listener = listener;
+    public PendienteAdapter(OnEliminar eliminarListener, OnClick clickListener) {
+        this.eliminarListener = eliminarListener;
+        this.clickListener = clickListener;
     }
 
     public void setItems(List<Pendiente> items) {
@@ -36,34 +35,37 @@ public class PendienteAdapter extends RecyclerView.Adapter<PendienteAdapter.Hold
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_pendiente, parent, false);
-        return new Holder(v);
+        ItemPendienteBinding binding = ItemPendienteBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false);
+        return new Holder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder h, int pos) {
         Pendiente p = list.get(pos);
-        h.titulo.setText(p.titulo);
+
+        h.binding.tituloPrincipal.setText(p.titulo);
+
+        // Sin subtítulo ni sinopsis en pendientes
+        h.binding.subtituloItem.setVisibility(android.view.View.GONE);
+        h.binding.sinopsisCorta.setVisibility(android.view.View.GONE);
+
         Glide.with(h.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w200" + p.imagenPath)
-                .into(h.imagen);
-        h.btnEliminar.setOnClickListener(v -> listener.eliminar(p));
+                .load("https://image.tmdb.org/t/p/w500" + p.imagenPath)
+                .into(h.binding.portadaItem);
+
+        h.itemView.setOnClickListener(v -> clickListener.onClick(p));
+        h.binding.btnQuitarPendiente.setOnClickListener(v -> eliminarListener.eliminar(p));
     }
 
     @Override
     public int getItemCount() { return list.size(); }
 
     static class Holder extends RecyclerView.ViewHolder {
-        ImageView imagen;
-        TextView titulo;
-        MaterialButton btnEliminar;
-
-        Holder(View v) {
-            super(v);
-            imagen = v.findViewById(R.id.imagenPendiente);
-            titulo = v.findViewById(R.id.tituloPendiente);
-            btnEliminar = v.findViewById(R.id.btnEliminarPendiente);
+        ItemPendienteBinding binding;
+        Holder(ItemPendienteBinding b) {
+            super(b.getRoot());
+            binding = b;
         }
     }
 }

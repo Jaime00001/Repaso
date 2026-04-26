@@ -37,12 +37,35 @@
         android:id="@+id/pendientesFragment"
         android:name="com.example.repaso.view.PendientesFragment"
         android:label="fragment_pendientes"
-        tools:layout="@layout/fragment_pendientes" />
+        tools:layout="@layout/fragment_pendientes">
+        <action
+            android:id="@+id/action_pendientesFragment_to_detallesFragment"
+            app:destination="@id/detallesFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/seguimientoFragment"
         android:name="com.example.repaso.view.SeguimientoFragment"
-        android:label="fragment_seguimiento"
-        tools:layout="@layout/fragment_seguimiento" />
+        android:label="Seguimiento"
+        tools:layout="@layout/fragment_seguimiento">
+        <action
+            android:id="@+id/action_seguimientoFragment_to_anadirSeguimientoFragment"
+            app:destination="@id/anadirSeguimientoFragment" />
+        <action
+            android:id="@+id/action_seguimientoFragment_to_detalleSeguimientoFragment"
+            app:destination="@id/detalleSeguimientoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/anadirSeguimientoFragment"
+        android:name="com.example.repaso.view.AnadirSeguimientoFragment"
+        android:label="Añadir Seguimiento"
+        tools:layout="@layout/fragment_anadir_seguimiento" />
+
+    <fragment
+        android:id="@+id/detalleSeguimientoFragment"
+        android:name="com.example.repaso.view.DetalleSeguimientoFragment"
+        android:label="Detalle"
+        tools:layout="@layout/fragment_detalle_seguimiento" />
 
 </navigation>

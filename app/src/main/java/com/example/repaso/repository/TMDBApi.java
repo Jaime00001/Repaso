@@ -28,4 +28,10 @@ public interface TMDBApi {
 
     @GET("tv/{id}/videos")
     Call<VideoResponse> getTvVideos(@Path("id") int id);
+
+    @GET("search/movie")
+    Call<MovieResponse> searchMovies(@Query("query") String query);
+
+    @GET("search/tv")
+    Call<MovieResponse> searchSeries(@Query("query") String query);
 }
