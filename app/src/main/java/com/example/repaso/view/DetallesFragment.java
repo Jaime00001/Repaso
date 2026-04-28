@@ -102,8 +102,15 @@ public class DetallesFragment extends Fragment {
             }
 
             String imgPath = d.backdrop_path != null ? d.backdrop_path : d.poster_path;
-            Glide.with(this).load("https://image.tmdb.org/t/p/w500" + imgPath)
-                    .into(binding.portadaDetalle);
+            
+            boolean isWifiOnly = com.example.repaso.repository.PreferencesManager.getInstance().isWifiOnly();
+            if (isWifiOnly) {
+                Glide.with(this).load(android.R.drawable.ic_menu_gallery)
+                        .into(binding.portadaDetalle);
+            } else {
+                Glide.with(this).load("https://image.tmdb.org/t/p/w500" + imgPath)
+                        .into(binding.portadaDetalle);
+            }
         });
 
         viewModel.getVideoKey().observe(getViewLifecycleOwner(), key -> videoKey = key);

@@ -62,9 +62,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.Holder> {
 
         String imgPath = m.backdrop_path != null ? m.backdrop_path : m.poster_path;
 
-        Glide.with(h.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w500" + imgPath)
-                .into(h.binding.portadaItem);
+        boolean isWifiOnly = com.example.repaso.repository.PreferencesManager.getInstance().isWifiOnly();
+
+        if (isWifiOnly) {
+            Glide.with(h.itemView.getContext())
+                    .load(android.R.drawable.ic_menu_gallery) // Placeholder
+                    .into(h.binding.portadaItem);
+        } else {
+            Glide.with(h.itemView.getContext())
+                    .load("https://image.tmdb.org/t/p/w500" + imgPath)
+                    .into(h.binding.portadaItem);
+        }
 
         h.itemView.setOnClickListener(v -> listener.onClick(m));
         h.binding.btnAnadirPendiente.setOnClickListener(v -> addListener.onAdd(m));

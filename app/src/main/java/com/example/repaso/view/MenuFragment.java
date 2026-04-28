@@ -21,7 +21,6 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMenuBinding.inflate(inflater, container, false);
-        ((androidx.appcompat.app.AppCompatActivity)getActivity()).getSupportActionBar().hide();
         return binding.getRoot();
     }
 

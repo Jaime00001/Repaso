@@ -50,9 +50,17 @@ public class PendienteAdapter extends RecyclerView.Adapter<PendienteAdapter.Hold
         h.binding.subtituloItem.setVisibility(android.view.View.GONE);
         h.binding.sinopsisCorta.setVisibility(android.view.View.GONE);
 
-        Glide.with(h.itemView.getContext())
-                .load("https://image.tmdb.org/t/p/w500" + p.imagenPath)
-                .into(h.binding.portadaItem);
+        boolean isWifiOnly = com.example.repaso.repository.PreferencesManager.getInstance().isWifiOnly();
+
+        if (isWifiOnly) {
+            Glide.with(h.itemView.getContext())
+                    .load(android.R.drawable.ic_menu_gallery)
+                    .into(h.binding.portadaItem);
+        } else {
+            Glide.with(h.itemView.getContext())
+                    .load("https://image.tmdb.org/t/p/w500" + p.imagenPath)
+                    .into(h.binding.portadaItem);
+        }
 
         h.itemView.setOnClickListener(v -> clickListener.onClick(p));
         h.binding.btnQuitarPendiente.setOnClickListener(v -> eliminarListener.eliminar(p));

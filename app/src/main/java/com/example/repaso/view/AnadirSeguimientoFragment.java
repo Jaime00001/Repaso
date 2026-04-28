@@ -66,6 +66,23 @@ public class AnadirSeguimientoFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(SeguimientoViewModel.class);
 
+        if (getArguments() != null) {
+            String argTitulo = getArguments().getString("titulo");
+            String argTipo = getArguments().getString("tipo");
+            if (argTitulo != null && !argTitulo.isEmpty()) {
+                binding.editBuscar.setText(argTitulo);
+            }
+            if (argTipo != null) {
+                if ("tv".equals(argTipo)) {
+                    binding.toggleTipo.check(R.id.btnSerie);
+                    tipoSeleccionado = "tv";
+                } else {
+                    binding.toggleTipo.check(R.id.btnPelicula);
+                    tipoSeleccionado = "movie";
+                }
+            }
+        }
+
         binding.toggleTipo.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.btnPelicula) tipoSeleccionado = "movie";

@@ -14,7 +14,15 @@ public class RetrofitClient {
 
             OkHttpClient client = new OkHttpClient.Builder()
                     .addInterceptor(chain -> {
+                        String language = PreferencesManager.getInstance().getLanguage();
+                        
+                        okhttp3.HttpUrl originalHttpUrl = chain.request().url();
+                        okhttp3.HttpUrl newUrl = originalHttpUrl.newBuilder()
+                                .addQueryParameter("language", language)
+                                .build();
+
                         Request newRequest = chain.request().newBuilder()
+                                .url(newUrl)
                                 .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3MTcxY2FhNjdiZWZhNDNmNWViZmRmNmYzYzQzM2U4NiIsIm5iZiI6MTc3MjQ0MjE0NC44NTIsInN1YiI6IjY5YTU1MjIwZWNlZTIzMzMyY2MxN2RiMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yUeSzAhXVVjqfIzYWgo7EMQ7eZeOs51W21cf2g4JEco")
                                 .build();
                         return chain.proceed(newRequest);

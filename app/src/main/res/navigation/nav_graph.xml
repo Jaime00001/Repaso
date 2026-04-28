@@ -68,4 +68,10 @@
         android:label="Detalle"
         tools:layout="@layout/fragment_detalle_seguimiento" />
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.repaso.view.SettingsFragment"
+        android:label="Ajustes"
+        tools:layout="@layout/fragment_settings" />
+
 </navigation>

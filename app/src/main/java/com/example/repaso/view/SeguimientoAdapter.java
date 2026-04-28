@@ -45,10 +45,18 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
         h.binding.tituloSeguimiento.setText(s.titulo);
         h.binding.fechaSeguimiento.setText(s.fecha);
 
+        boolean isWifiOnly = com.example.repaso.repository.PreferencesManager.getInstance().isWifiOnly();
+
         if (s.imagenPath != null && !s.imagenPath.isEmpty()) {
-            Glide.with(h.itemView.getContext())
-                 .load("https://image.tmdb.org/t/p/w200" + s.imagenPath)
-                 .into(h.binding.imagenSeguimiento);
+            if (isWifiOnly) {
+                Glide.with(h.itemView.getContext())
+                     .load(android.R.drawable.ic_menu_gallery)
+                     .into(h.binding.imagenSeguimiento);
+            } else {
+                Glide.with(h.itemView.getContext())
+                     .load("https://image.tmdb.org/t/p/w200" + s.imagenPath)
+                     .into(h.binding.imagenSeguimiento);
+            }
         } else {
             h.binding.imagenSeguimiento.setImageResource(android.R.color.darker_gray);
         }
