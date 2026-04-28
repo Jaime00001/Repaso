@@ -7,6 +7,10 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.navigation.NavDestination;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import android.view.View;
 
 import com.example.repaso.R;
 import com.example.repaso.databinding.ActivityMainBinding;
@@ -33,24 +37,19 @@ public class MainActivity extends AppCompatActivity {
             ).build();
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);
 
-            // Navegación manual del Bottom Nav
-            binding.bottomNav.setOnItemSelectedListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.nav_pendientes) {
-                    navController.navigate(R.id.pendientesFragment);
-                    return true;
-                } else if (id == R.id.nav_explorar) {
-                    navController.navigate(R.id.menuFragment);
-                    return true;
-                } else if (id == R.id.nav_seguimiento) {
-                    navController.navigate(R.id.seguimientoFragment);
-                    return true;
-                }
-                return false;
-            });
+            NavigationUI.setupWithNavController(binding.bottomNav, navController);
 
-            // Seleccionar "Explorar" por defecto
-            binding.bottomNav.setSelectedItemId(R.id.nav_explorar);
+            navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
+                @Override
+                public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                    int id = destination.getId();
+                    if (id == R.id.menuFragment || id == R.id.pendientesFragment || id == R.id.seguimientoFragment) {
+                        binding.bottomNav.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.bottomNav.setVisibility(View.GONE);
+                    }
+                }
+            });
         }
     }
 

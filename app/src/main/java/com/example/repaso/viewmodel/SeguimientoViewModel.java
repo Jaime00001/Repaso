@@ -7,9 +7,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.repaso.model.Seguimiento;
+import com.example.repaso.model.MovieResponse;
+import com.example.repaso.model.MovieDetail;
 import com.example.repaso.repository.SeguimientoRepository;
 
 import java.util.List;
+
+import retrofit2.Callback;
 
 public class SeguimientoViewModel extends AndroidViewModel {
 
@@ -36,5 +40,13 @@ public class SeguimientoViewModel extends AndroidViewModel {
 
     public void eliminar(int id) {
         repository.eliminar(id);
+    }
+
+    public void buscarEnTMDB(String query, String tipo, Callback<MovieResponse> callback) {
+        repository.buscarEnTMDB(query, tipo, callback);
+    }
+
+    public void obtenerDetalleTMDB(int id, String tipo, Callback<MovieDetail> callback) {
+        repository.obtenerDetalleTMDB(id, tipo, callback);
     }
 }

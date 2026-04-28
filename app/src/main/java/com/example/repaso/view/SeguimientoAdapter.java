@@ -1,16 +1,13 @@
 package com.example.repaso.view;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.repaso.R;
+import com.example.repaso.databinding.ItemSeguimientoBinding;
 import com.example.repaso.model.Seguimiento;
 
 import java.util.ArrayList;
@@ -37,23 +34,23 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_seguimiento, parent, false);
-        return new Holder(v);
+        ItemSeguimientoBinding binding = ItemSeguimientoBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false);
+        return new Holder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder h, int pos) {
         Seguimiento s = list.get(pos);
-        h.titulo.setText(s.titulo);
-        h.fecha.setText(s.fecha);
+        h.binding.tituloSeguimiento.setText(s.titulo);
+        h.binding.fechaSeguimiento.setText(s.fecha);
 
         if (s.imagenPath != null && !s.imagenPath.isEmpty()) {
             Glide.with(h.itemView.getContext())
                  .load("https://image.tmdb.org/t/p/w200" + s.imagenPath)
-                 .into(h.imagen);
+                 .into(h.binding.imagenSeguimiento);
         } else {
-            h.imagen.setImageResource(android.R.color.darker_gray);
+            h.binding.imagenSeguimiento.setImageResource(android.R.color.darker_gray);
         }
 
         h.itemView.setOnClickListener(v -> {
@@ -65,15 +62,11 @@ public class SeguimientoAdapter extends RecyclerView.Adapter<SeguimientoAdapter.
     public int getItemCount() { return list.size(); }
 
     static class Holder extends RecyclerView.ViewHolder {
-        ImageView imagen;
-        TextView titulo;
-        TextView fecha;
+        ItemSeguimientoBinding binding;
 
-        Holder(View v) {
-            super(v);
-            imagen = v.findViewById(R.id.imagenSeguimiento);
-            titulo = v.findViewById(R.id.tituloSeguimiento);
-            fecha = v.findViewById(R.id.fechaSeguimiento);
+        Holder(ItemSeguimientoBinding b) {
+            super(b.getRoot());
+            binding = b;
         }
     }
 }

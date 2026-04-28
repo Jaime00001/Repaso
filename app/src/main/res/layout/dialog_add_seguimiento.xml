@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir seguimiento"
+        android:text="AÃ±adir seguimiento"
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="#000000"
@@ -23,11 +23,11 @@
             android:id="@+id/editTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Título de la serie o película" />
+            android:hint="TÃ­tulo de la serie o pelÃ­cula" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- La fecha se puede generar automáticamente, o añadir un input si se requiere.
-         Para la simplicidad visual de añadir seguimiento, usaremos un input de fecha o automático -->
+    <!-- La fecha se puede generar automÃ¡ticamente, o aÃ±adir un input si se requiere.
+         Para la simplicidad visual de aÃ±adir seguimiento, usaremos un input de fecha o automÃ¡tico -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 package com.example.repaso.repository;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import java.util.concurrent.Executors;
 
 import androidx.lifecycle.LiveData;
 
@@ -22,10 +22,10 @@ public class PendientesRepository {
     }
 
     public void insertar(Pendiente pendiente) {
-        AsyncTask.execute(() -> dao.insertar(pendiente));
+        Executors.newSingleThreadExecutor().execute(() -> dao.insertar(pendiente));
     }
 
     public void eliminar(int id) {
-        AsyncTask.execute(() -> dao.eliminar(id));
+        Executors.newSingleThreadExecutor().execute(() -> dao.eliminar(id));
     }
 }

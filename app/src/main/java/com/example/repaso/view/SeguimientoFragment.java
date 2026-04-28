@@ -11,47 +11,45 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.repaso.R;
+import com.example.repaso.databinding.FragmentSeguimientoBinding;
 import com.example.repaso.viewmodel.SeguimientoViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class SeguimientoFragment extends Fragment {
 
     private SeguimientoViewModel viewModel;
     private SeguimientoAdapter adapter;
+    private FragmentSeguimientoBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_seguimiento, container, false);
+        binding = FragmentSeguimientoBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(SeguimientoViewModel.class);
 
-        View estadoVacio = view.findViewById(R.id.estadoVacio);
-        RecyclerView recycler = view.findViewById(R.id.listaSeguimiento);
-        FloatingActionButton btnAnadir = view.findViewById(R.id.btnAnadir);
-
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.listaSeguimiento.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new SeguimientoAdapter();
         adapter.setListener(id -> mostrarDetalleSeguimiento(id));
-        recycler.setAdapter(adapter);
+        binding.listaSeguimiento.setAdapter(adapter);
 
         viewModel.getSeguimientos().observe(getViewLifecycleOwner(), items -> {
             adapter.setItems(items);
             if (items == null || items.isEmpty()) {
-                estadoVacio.setVisibility(View.VISIBLE);
-                recycler.setVisibility(View.GONE);
+                binding.estadoVacio.setVisibility(View.VISIBLE);
+                binding.listaSeguimiento.setVisibility(View.GONE);
             } else {
-                estadoVacio.setVisibility(View.GONE);
-                recycler.setVisibility(View.VISIBLE);
+                binding.estadoVacio.setVisibility(View.GONE);
+                binding.listaSeguimiento.setVisibility(View.VISIBLE);
             }
         });
 
-        btnAnadir.setOnClickListener(v -> mostrarPantallaAnadir());
+        binding.btnAnadir.setOnClickListener(v -> mostrarPantallaAnadir());
     }
 
     private void mostrarDetalleSeguimiento(int id) {

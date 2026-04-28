@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_pendientes"
+        android:id="@+id/pendientesFragment"
         android:icon="@android:drawable/ic_menu_agenda"
         android:title="Pendientes" />
 
     <item
-        android:id="@+id/nav_explorar"
+        android:id="@+id/menuFragment"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Explorar" />
 
     <item
-        android:id="@+id/nav_seguimiento"
+        android:id="@+id/seguimientoFragment"
         android:icon="@android:drawable/ic_menu_recent_history"
         android:title="Seguimiento" />
 

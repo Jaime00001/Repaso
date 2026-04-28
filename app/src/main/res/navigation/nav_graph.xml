@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.example.repaso.view.MenuFragment"
-        android:label="fragment_menu"
+        android:label="Explorar"
         tools:layout="@layout/fragment_menu" >
         <action
             android:id="@+id/action_menuFragment_to_detallesFragment"
@@ -18,25 +18,25 @@
     <fragment
         android:id="@+id/detallesFragment"
         android:name="com.example.repaso.view.DetallesFragment"
-        android:label="fragment_detalles"
+        android:label="Detalles"
         tools:layout="@layout/fragment_detalles" />
 
     <fragment
         android:id="@+id/peliculasFragment"
         android:name="com.example.repaso.view.PeliculasFragment"
-        android:label="fragment_peliculas"
+        android:label="Películas"
         tools:layout="@layout/fragment_peliculas" />
 
     <fragment
         android:id="@+id/seriesFragment"
         android:name="com.example.repaso.view.SeriesFragment"
-        android:label="fragment_series"
+        android:label="Series"
         tools:layout="@layout/fragment_series" />
 
     <fragment
         android:id="@+id/pendientesFragment"
         android:name="com.example.repaso.view.PendientesFragment"
-        android:label="fragment_pendientes"
+        android:label="Pendientes"
         tools:layout="@layout/fragment_pendientes">
         <action
             android:id="@+id/action_pendientesFragment_to_detallesFragment"

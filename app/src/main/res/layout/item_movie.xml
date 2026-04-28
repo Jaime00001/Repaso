@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<LinearLayout
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
@@ -55,7 +57,7 @@
                     android:textSize="18sp"/>
             </LinearLayout>
 
-            <!-- Botón añadir a pendientes -->
+            <!-- BotÃ³n aÃ±adir a pendientes -->
             <ImageButton
                 android:id="@+id/btnAnadirPendiente"
                 android:layout_width="36dp"
@@ -91,3 +93,4 @@
         android:ellipsize="end"/>
 
 </LinearLayout>
+</layout>
