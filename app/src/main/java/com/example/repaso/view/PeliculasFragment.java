@@ -44,6 +44,7 @@ public class PeliculasFragment extends Fragment {
                     p.titulo = movie.getDisplayTitle();
                     p.imagenPath = movie.backdrop_path != null ? movie.backdrop_path : movie.poster_path;
                     p.tipo = "movie";
+                    p.userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
                     viewModel.anadirAPendientes(p);
                     Toast.makeText(requireContext(), "Añadido a pendientes", Toast.LENGTH_SHORT).show();
                 }

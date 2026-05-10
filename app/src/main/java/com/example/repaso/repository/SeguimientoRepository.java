@@ -24,8 +24,8 @@ public class SeguimientoRepository {
         api = RetrofitClient.getClient().create(TMDBApi.class);
     }
 
-    public LiveData<List<Seguimiento>> obtenerTodos() {
-        return dao.obtenerTodos();
+    public LiveData<List<Seguimiento>> obtenerTodos(String userId) {
+        return dao.obtenerTodos(userId);
     }
 
     public LiveData<Seguimiento> obtenerPorId(int id) {

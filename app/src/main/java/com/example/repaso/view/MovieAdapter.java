@@ -66,7 +66,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.Holder> {
 
         if (isWifiOnly) {
             Glide.with(h.itemView.getContext())
-                    .load(android.R.drawable.ic_menu_gallery) // Placeholder
+                    .load(android.R.drawable.ic_menu_gallery)
                     .into(h.binding.portadaItem);
         } else {
             Glide.with(h.itemView.getContext())

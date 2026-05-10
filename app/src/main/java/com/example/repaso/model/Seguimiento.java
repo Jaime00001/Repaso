@@ -13,4 +13,5 @@ public class Seguimiento {
     public String tipo;  // "movie" o "tv"
     public int tmdbId;
     public float puntuacion;
+    public String userId;
 }

@@ -17,8 +17,8 @@ public class PendientesRepository {
         dao = AppDatabase.obtener(context).pendienteDao();
     }
 
-    public LiveData<List<Pendiente>> obtenerTodos() {
-        return dao.obtenerTodos();
+    public LiveData<List<Pendiente>> obtenerTodos(String userId) {
+        return dao.obtenerTodos(userId);
     }
 
     public void insertar(Pendiente pendiente) {

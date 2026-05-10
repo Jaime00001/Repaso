@@ -46,7 +46,6 @@ public class PendienteAdapter extends RecyclerView.Adapter<PendienteAdapter.Hold
 
         h.binding.tituloPrincipal.setText(p.titulo);
 
-        // Sin subtítulo ni sinopsis en pendientes
         h.binding.subtituloItem.setVisibility(android.view.View.GONE);
         h.binding.sinopsisCorta.setVisibility(android.view.View.GONE);
 

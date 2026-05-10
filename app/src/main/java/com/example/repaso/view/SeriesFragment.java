@@ -47,6 +47,7 @@ public class SeriesFragment extends Fragment {
                     p.titulo = movie.getDisplayTitle();
                     p.imagenPath = movie.backdrop_path != null ? movie.backdrop_path : movie.poster_path;
                     p.tipo = "tv";
+                    p.userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
                     pendientesRepository.insertar(p);
                     Toast.makeText(requireContext(), "Añadido a pendientes", Toast.LENGTH_SHORT).show();
                 }

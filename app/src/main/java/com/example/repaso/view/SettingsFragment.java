@@ -81,13 +81,11 @@ public class SettingsFragment extends Fragment {
 
     private void setupButtons() {
         binding.btnSave.setOnClickListener(v -> {
-            // Update language from spinner before saving
             int selectedPosition = binding.spinnerLanguage.getSelectedItemPosition();
             viewModel.language.setValue(languageCodes[selectedPosition]);
             
             viewModel.savePreferences();
 
-            // Apply Theme if changed
             if (viewModel.darkMode.getValue() != null && viewModel.darkMode.getValue()) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             } else {
@@ -101,6 +99,14 @@ public class SettingsFragment extends Fragment {
             viewModel.resetPreferences();
             binding.spinnerLanguage.setSelection(0);
             Toast.makeText(requireContext(), "Preferencias restablecidas", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.btnLogout.setOnClickListener(v -> {
+            com.google.firebase.auth.FirebaseAuth.getInstance().signOut();
+            android.content.Intent intent = new android.content.Intent(requireActivity(), AuthActivity.class);
+            intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            requireActivity().finish();
         });
     }
 

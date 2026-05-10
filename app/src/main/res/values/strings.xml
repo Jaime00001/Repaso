@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">CineTracker</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">700264606892-akjg28o27i2b99pql0r5rhup6ociab1m.apps.googleusercontent.com</string>
 </resources>

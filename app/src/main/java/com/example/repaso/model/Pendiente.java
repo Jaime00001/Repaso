@@ -10,4 +10,5 @@ public class Pendiente {
     public String titulo;
     public String imagenPath;
     public String tipo; // "movie" o "tv"
+    public String userId;
 }

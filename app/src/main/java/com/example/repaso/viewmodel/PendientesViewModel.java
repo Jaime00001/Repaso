@@ -19,7 +19,8 @@ public class PendientesViewModel extends AndroidViewModel {
     public PendientesViewModel(@NonNull Application application) {
         super(application);
         repository = new PendientesRepository(application);
-        pendientes = repository.obtenerTodos();
+        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        pendientes = repository.obtenerTodos(userId);
     }
 
     public LiveData<List<Pendiente>> getPendientes() {

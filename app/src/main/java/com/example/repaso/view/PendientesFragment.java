@@ -53,7 +53,6 @@ public class PendientesFragment extends Fragment {
             }
         });
 
-        // Botón "VER TODAS LAS PELÍCULAS" → ir a pestaña Explorar
         binding.btnVerPeliculas.setOnClickListener(v -> {
             BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav);
             if (bottomNav != null) {

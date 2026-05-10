@@ -80,13 +80,16 @@ public class MainActivity extends AppCompatActivity {
                     () -> navController.navigate(R.id.settingsFragment)
             );
         } else {
-            com.example.repaso.repository.AppDatabase.obtener(this).pendienteDao().obtenerTodos()
+            String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+            if (userId == null) return;
+            
+            com.example.repaso.repository.AppDatabase.obtener(this).pendienteDao().obtenerTodos(userId)
                     .observe(this, new androidx.lifecycle.Observer<java.util.List<com.example.repaso.model.Pendiente>>() {
                         @Override
                         public void onChanged(java.util.List<com.example.repaso.model.Pendiente> pendientes) {
                             // Remove observer to avoid multiple dialogs
                             com.example.repaso.repository.AppDatabase.obtener(MainActivity.this)
-                                    .pendienteDao().obtenerTodos().removeObserver(this);
+                                    .pendienteDao().obtenerTodos(userId).removeObserver(this);
 
                             if (pendientes != null && !pendientes.isEmpty()) {
                                 int randomIndex = new java.util.Random().nextInt(pendientes.size());
@@ -161,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host);
             if (navHostFragment != null) {
                 NavController navController = navHostFragment.getNavController();
-                // We will navigate using an action from a global scope, or just directly to the ID.
                 navController.navigate(R.id.settingsFragment);
             }
             return true;

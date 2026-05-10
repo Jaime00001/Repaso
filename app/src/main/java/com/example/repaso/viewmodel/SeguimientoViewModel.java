@@ -23,7 +23,8 @@ public class SeguimientoViewModel extends AndroidViewModel {
     public SeguimientoViewModel(@NonNull Application application) {
         super(application);
         repository = new SeguimientoRepository(application);
-        seguimientos = repository.obtenerTodos();
+        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        seguimientos = repository.obtenerTodos(userId);
     }
 
     public LiveData<List<Seguimiento>> getSeguimientos() {

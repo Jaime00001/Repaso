@@ -16,8 +16,8 @@ public interface PendienteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertar(Pendiente pendiente);
 
-    @Query("SELECT * FROM pendientes")
-    LiveData<List<Pendiente>> obtenerTodos();
+    @Query("SELECT * FROM pendientes WHERE userId = :userId")
+    LiveData<List<Pendiente>> obtenerTodos(String userId);
 
     @Query("DELETE FROM pendientes WHERE id = :id")
     void eliminar(int id);

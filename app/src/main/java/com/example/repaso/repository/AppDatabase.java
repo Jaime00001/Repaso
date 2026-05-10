@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.example.repaso.model.Pendiente;
 import com.example.repaso.model.Seguimiento;
 
-@Database(entities = {Pendiente.class, Seguimiento.class}, version = 3, exportSchema = false)
+@Database(entities = {Pendiente.class, Seguimiento.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instancia;

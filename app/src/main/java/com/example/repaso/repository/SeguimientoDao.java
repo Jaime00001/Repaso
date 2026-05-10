@@ -16,8 +16,8 @@ public interface SeguimientoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertar(Seguimiento s);
 
-    @Query("SELECT * FROM seguimientos ORDER BY fecha DESC")
-    LiveData<List<Seguimiento>> obtenerTodos();
+    @Query("SELECT * FROM seguimientos WHERE userId = :userId ORDER BY fecha DESC")
+    LiveData<List<Seguimiento>> obtenerTodos(String userId);
 
     @Query("DELETE FROM seguimientos WHERE id = :id")
     void eliminar(int id);

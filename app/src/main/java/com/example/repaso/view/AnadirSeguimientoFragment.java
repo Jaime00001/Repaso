@@ -157,7 +157,6 @@ public class AnadirSeguimientoFragment extends Fragment {
         String imagenPathDB = "";
         int tmdbId = 0;
 
-        // Coger info del TMDB si hay resultados seleccionados, si no, del texto que buscaron.
         if (binding.spinnerResultados.getVisibility() == View.VISIBLE && binding.spinnerResultados.getSelectedItemPosition() >= 0) {
             int pos = binding.spinnerResultados.getSelectedItemPosition();
             if (pos < resultadosBusqueda.size()) {
@@ -175,7 +174,6 @@ public class AnadirSeguimientoFragment extends Fragment {
             return;
         }
 
-        // Si subió su propia imagen, lo guardamos como un uri string para usarlo luego
         if (imagenRecuerdoUri != null) {
             imagenPathDB = imagenRecuerdoUri.toString(); 
         }
@@ -184,11 +182,7 @@ public class AnadirSeguimientoFragment extends Fragment {
         String finalImagenPathDB = imagenPathDB;
         int finalTmdbId = tmdbId;
 
-        // Comprobación de existencia. El "repository" permite insertar
-        // Como nos piden "Un detalle interesante es que la aplicación no permita añadir seguimiento de una peli o serie de la que ya hay"
         viewModel.getSeguimientos().observe(getViewLifecycleOwner(), items -> {
-            // Desinscribirse de esta observación directamente o hacer una validación on-shot.
-            // Para simplificar "hazlo de la manera mas sencilla posible", validamos aquí y luego ejecutamos insert/popbackstack.
             boolean existe = false;
             if (items != null) {
                 for (Seguimiento s : items) {
@@ -206,14 +200,14 @@ public class AnadirSeguimientoFragment extends Fragment {
                 nuevoSeguimiento.fecha = fechaSeleccionada;
                 nuevoSeguimiento.puntuacion = binding.ratingBar.getRating();
                 nuevoSeguimiento.tipo = tipoSeleccionado;
-                nuevoSeguimiento.imagenPath = finalImagenPathDB; // TMDB path (empieza por /) o Local Uri content://
+                nuevoSeguimiento.imagenPath = finalImagenPathDB;
                 nuevoSeguimiento.tmdbId = finalTmdbId;
+                nuevoSeguimiento.userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
 
                 viewModel.insertar(nuevoSeguimiento);
                 Toast.makeText(getContext(), "Guardado con éxito", Toast.LENGTH_SHORT).show();
-                requireActivity().getSupportFragmentManager().popBackStack(); // O navController.navigateUp()
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
-            // Importante quitar el observer para no ciclar
             viewModel.getSeguimientos().removeObservers(getViewLifecycleOwner());
         });
     }
