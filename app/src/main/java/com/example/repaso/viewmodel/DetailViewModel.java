@@ -18,13 +18,19 @@ public class DetailViewModel extends ViewModel {
     private MutableLiveData<MovieDetail> detail = new MutableLiveData<>();
     private MutableLiveData<String> videoKey = new MutableLiveData<>();
     private MutableLiveData<ApiState> state = new MutableLiveData<>();
+    private androidx.lifecycle.MutableLiveData<java.util.List<com.example.repaso.model.Comment>> comments = new androidx.lifecycle.MutableLiveData<>();
+    
     private Repository repo = Repository.getInstance();
+    private com.example.repaso.repository.FirestoreRepository firestore = new com.example.repaso.repository.FirestoreRepository();
+    private com.google.firebase.firestore.ListenerRegistration commentRegistration;
 
     public LiveData<MovieDetail> getDetail() { return detail; }
     public LiveData<String> getVideoKey() { return videoKey; }
     public LiveData<ApiState> getState() { return state; }
+    public LiveData<java.util.List<com.example.repaso.model.Comment>> getComments() { return comments; }
 
     public void loadDetail(int id, String type) {
+        listenForComments(id);
         state.setValue(ApiState.LOADING);
 
         Callback<MovieDetail> callback = new Callback<MovieDetail>() {
@@ -72,5 +78,27 @@ public class DetailViewModel extends ViewModel {
         } else {
             repo.getMovieVideos(id, videoCallback);
         }
+    }
+
+    public void listenForComments(int tmdbId) {
+        if (commentRegistration != null) commentRegistration.remove();
+        commentRegistration = firestore.getComments(tmdbId)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) return;
+                    if (value != null) {
+                        comments.setValue(value.toObjects(com.example.repaso.model.Comment.class));
+                    }
+                });
+    }
+
+    public void postComment(int tmdbId, String text, String authorName, String authorUid) {
+        com.example.repaso.model.Comment comment = new com.example.repaso.model.Comment(null, authorUid, authorName, text);
+        firestore.addComment(tmdbId, comment);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (commentRegistration != null) commentRegistration.remove();
     }
 }

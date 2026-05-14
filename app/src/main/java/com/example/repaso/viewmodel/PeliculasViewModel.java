@@ -29,7 +29,7 @@ public class PeliculasViewModel extends AndroidViewModel {
 
     public PeliculasViewModel(@NonNull Application application) {
         super(application);
-        pendientesRepository = new PendientesRepository(application);
+        pendientesRepository = new PendientesRepository();
     }
 
     public LiveData<List<Movie>> getItems() { return items; }
@@ -56,7 +56,7 @@ public class PeliculasViewModel extends AndroidViewModel {
     }
 
     public void anadirAPendientes(Pendiente p) {
-        pendientesRepository.insertar(p);
+        pendientesRepository.insertar(p.userId, p);
     }
 
     public void nextPage() { page++; }

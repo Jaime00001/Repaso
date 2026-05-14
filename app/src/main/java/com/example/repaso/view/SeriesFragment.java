@@ -36,7 +36,7 @@ public class SeriesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        pendientesRepository = new PendientesRepository(requireContext());
+        pendientesRepository = new PendientesRepository();
 
         binding.listaVista.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new MovieAdapter(
@@ -48,8 +48,8 @@ public class SeriesFragment extends Fragment {
                     p.imagenPath = movie.backdrop_path != null ? movie.backdrop_path : movie.poster_path;
                     p.tipo = "tv";
                     p.userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
-                    pendientesRepository.insertar(p);
-                    Toast.makeText(requireContext(), "Añadido a pendientes", Toast.LENGTH_SHORT).show();
+                    pendientesRepository.insertar(p.userId, p);
+                    Toast.makeText(requireContext(), "AÃ±adido a pendientes", Toast.LENGTH_SHORT).show();
                 }
         );
         binding.listaVista.setAdapter(adapter);

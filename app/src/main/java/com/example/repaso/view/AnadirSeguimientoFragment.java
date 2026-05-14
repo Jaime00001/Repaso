@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.repaso.R;
 import com.example.repaso.model.Movie;
@@ -21,6 +22,7 @@ import com.example.repaso.model.MovieResponse;
 import com.example.repaso.model.Seguimiento;
 import com.example.repaso.databinding.FragmentAnadirSeguimientoBinding;
 import com.example.repaso.viewmodel.SeguimientoViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +31,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import androidx.lifecycle.ViewModelProvider;
 
 public class AnadirSeguimientoFragment extends Fragment {
 
@@ -37,7 +38,6 @@ public class AnadirSeguimientoFragment extends Fragment {
     private String fechaSeleccionada = "";
     private Uri imagenRecuerdoUri = null;
     private List<Movie> resultadosBusqueda = new ArrayList<>();
-    private String posterBuscado = "";
     
     private FragmentAnadirSeguimientoBinding binding;
     private SeguimientoViewModel viewModel;
@@ -63,7 +63,6 @@ public class AnadirSeguimientoFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         viewModel = new ViewModelProvider(this).get(SeguimientoViewModel.class);
 
         if (getArguments() != null) {
@@ -91,9 +90,7 @@ public class AnadirSeguimientoFragment extends Fragment {
         });
 
         binding.btnBuscarTMDB.setOnClickListener(v -> buscarEnTMDB());
-
         binding.textFecha.setOnClickListener(v -> mostrarDatePicker());
-
         binding.cajaImagen.setOnClickListener(v -> mGetContent.launch("image/*"));
 
         binding.btnBorrarImagen.setOnClickListener(v -> {
@@ -117,9 +114,8 @@ public class AnadirSeguimientoFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     resultadosBusqueda = response.body().results;
                     List<String> titulos = new ArrayList<>();
-                    for (Movie m : resultadosBusqueda) {
-                        titulos.add(m.getDisplayTitle());
-                    }
+                    for (Movie m : resultadosBusqueda) titulos.add(m.getDisplayTitle());
+                    
                     if (titulos.isEmpty()) {
                         Toast.makeText(getContext(), "No se encontraron resultados", Toast.LENGTH_SHORT).show();
                         binding.spinnerResultados.setVisibility(View.GONE);
@@ -174,9 +170,7 @@ public class AnadirSeguimientoFragment extends Fragment {
             return;
         }
 
-        if (imagenRecuerdoUri != null) {
-            imagenPathDB = imagenRecuerdoUri.toString(); 
-        }
+        if (imagenRecuerdoUri != null) imagenPathDB = imagenRecuerdoUri.toString(); 
 
         String finalTitulo = titulo;
         String finalImagenPathDB = imagenPathDB;
@@ -202,7 +196,7 @@ public class AnadirSeguimientoFragment extends Fragment {
                 nuevoSeguimiento.tipo = tipoSeleccionado;
                 nuevoSeguimiento.imagenPath = finalImagenPathDB;
                 nuevoSeguimiento.tmdbId = finalTmdbId;
-                nuevoSeguimiento.userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+                nuevoSeguimiento.userId = FirebaseAuth.getInstance().getUid();
 
                 viewModel.insertar(nuevoSeguimiento);
                 Toast.makeText(getContext(), "Guardado con éxito", Toast.LENGTH_SHORT).show();

@@ -95,10 +95,11 @@ public class RegisterFragment extends Fragment {
 
     private void setupListeners() {
         binding.registerButton.setOnClickListener(v -> {
+            String username = binding.usernameEditText.getText().toString();
             String email = binding.emailEditText.getText().toString();
             String pass = binding.passwordEditText.getText().toString();
             String confirmPass = binding.confirmPasswordEditText.getText().toString();
-            viewModel.register(email, pass, confirmPass);
+            viewModel.register(email, pass, confirmPass, username);
         });
 
         binding.googleSignInButton.setOnClickListener(v -> {

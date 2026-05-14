@@ -115,6 +115,40 @@ public class DetallesFragment extends Fragment {
 
         viewModel.getVideoKey().observe(getViewLifecycleOwner(), key -> videoKey = key);
 
+        // Configuración de comentarios
+        CommentAdapter commentAdapter = new CommentAdapter();
+        binding.recyclerViewComments.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(getContext()));
+        binding.recyclerViewComments.setAdapter(commentAdapter);
+
+        viewModel.getComments().observe(getViewLifecycleOwner(), list -> {
+            commentAdapter.setComments(list);
+            binding.commentsHeader.setText("Comentarios (" + list.size() + ")");
+            binding.noCommentsText.setVisibility(list.isEmpty() ? View.VISIBLE : View.GONE);
+        });
+
+        binding.commentInputLayout.setEndIconOnClickListener(v -> {
+            String text = binding.commentEditText.getText().toString().trim();
+            if (text.isEmpty()) return;
+
+            String uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+            if (uid == null) return;
+
+            // Obtener el nombre del usuario desde Firestore para el comentario
+            new com.example.repaso.repository.FirestoreRepository().getUserProfile(uid)
+                    .get()
+                    .addOnSuccessListener(doc -> {
+                        String authorName = "Usuario";
+                        if (doc.exists()) {
+                            authorName = doc.getString("displayName");
+                        }
+                        viewModel.postComment(id, text, authorName, uid);
+                        binding.commentEditText.setText("");
+                        // Cerrar teclado
+                        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) requireActivity().getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(binding.commentEditText.getWindowToken(), 0);
+                    });
+        });
+
         binding.botonVerTrailer.setOnClickListener(v -> {
             if (videoKey == null) return;
 

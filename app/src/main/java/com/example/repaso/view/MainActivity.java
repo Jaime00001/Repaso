@@ -83,13 +83,11 @@ public class MainActivity extends AppCompatActivity {
             String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
             if (userId == null) return;
             
-            com.example.repaso.repository.AppDatabase.obtener(this).pendienteDao().obtenerTodos(userId)
+            new com.example.repaso.repository.PendientesRepository().obtenerTodos(userId)
                     .observe(this, new androidx.lifecycle.Observer<java.util.List<com.example.repaso.model.Pendiente>>() {
                         @Override
                         public void onChanged(java.util.List<com.example.repaso.model.Pendiente> pendientes) {
-                            // Remove observer to avoid multiple dialogs
-                            com.example.repaso.repository.AppDatabase.obtener(MainActivity.this)
-                                    .pendienteDao().obtenerTodos(userId).removeObserver(this);
+                            new com.example.repaso.repository.PendientesRepository().obtenerTodos(userId).removeObserver(this);
 
                             if (pendientes != null && !pendientes.isEmpty()) {
                                 int randomIndex = new java.util.Random().nextInt(pendientes.size());

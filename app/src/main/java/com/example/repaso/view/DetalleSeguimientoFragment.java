@@ -46,7 +46,6 @@ public class DetalleSeguimientoFragment extends Fragment {
                     binding.fechaDetalle.setText(seguimiento.fecha);
                     binding.ratingDetalle.setRating(seguimiento.puntuacion);
 
-                    // La imagen custom de recuerdo
                     if (seguimiento.imagenPath != null && seguimiento.imagenPath.startsWith("content://")) {
                         binding.imagenRecuerdoDetalle.setImageURI(Uri.parse(seguimiento.imagenPath));
                         binding.cardImagenRecuerdo.setVisibility(View.VISIBLE);
@@ -56,7 +55,6 @@ public class DetalleSeguimientoFragment extends Fragment {
                         binding.labelImagenRecuerdo.setVisibility(View.GONE);
                     }
 
-                    // Cargar info extra de TMDB
                     if (seguimiento.tmdbId > 0) {
                         viewModel.obtenerDetalleTMDB(seguimiento.tmdbId, seguimiento.tipo, new Callback<MovieDetail>() {
                             @Override
@@ -64,11 +62,9 @@ public class DetalleSeguimientoFragment extends Fragment {
                                 if (response.isSuccessful() && response.body() != null) {
                                     MovieDetail detail = response.body();
                                     
-                                    // Poner el backdrop en la cabecera
                                     String img = detail.backdrop_path != null ? detail.backdrop_path : detail.poster_path;
                                     Glide.with(requireContext()).load("https://image.tmdb.org/t/p/w500" + img).into(binding.imagenTMDB);
 
-                                    // Construir subtitulos como "4 temporadas • Ciencia Ficción, Terror"
                                     StringBuilder sub = new StringBuilder();
                                     if ("tv".equals(seguimiento.tipo) && detail.number_of_seasons > 0) {
                                         sub.append(detail.number_of_seasons).append(detail.number_of_seasons == 1 ? " temporada" : " temporadas");

@@ -24,16 +24,34 @@ public class AuthRepository {
                 .addOnFailureListener(e -> callback.onError(mapError(e)));
     }
 
-    public void register(String email, String password, AuthCallback callback) {
+    public void register(String email, String password, String username, AuthCallback callback) {
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(result -> callback.onSuccess(auth.getCurrentUser()))
+                .addOnSuccessListener(result -> {
+                    FirebaseUser user = auth.getCurrentUser();
+                    if (user != null) {
+                        com.example.repaso.model.UserProfile profile = new com.example.repaso.model.UserProfile(user.getUid(), username, email);
+                        new FirestoreRepository().saveUserProfile(profile);
+                    }
+                    callback.onSuccess(user);
+                })
                 .addOnFailureListener(e -> callback.onError(mapError(e)));
     }
 
     public void loginWithGoogle(String idToken, AuthCallback callback) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         auth.signInWithCredential(credential)
-                .addOnSuccessListener(result -> callback.onSuccess(auth.getCurrentUser()))
+                .addOnSuccessListener(result -> {
+                    FirebaseUser user = auth.getCurrentUser();
+                    if (user != null) {
+                        com.example.repaso.model.UserProfile profile = new com.example.repaso.model.UserProfile(
+                                user.getUid(),
+                                user.getDisplayName() != null ? user.getDisplayName() : "Usuario de Google",
+                                user.getEmail()
+                        );
+                        new FirestoreRepository().saveUserProfile(profile);
+                    }
+                    callback.onSuccess(user);
+                })
                 .addOnFailureListener(e -> callback.onError(mapError(e)));
     }
 

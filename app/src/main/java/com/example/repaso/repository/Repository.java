@@ -9,7 +9,7 @@ import retrofit2.Callback;
 public class Repository {
 
     private static Repository instance;
-    private TMDBApi api;
+    private final TMDBApi api;
 
     private Repository() {
         api = RetrofitClient.getClient().create(TMDBApi.class);
@@ -26,6 +26,14 @@ public class Repository {
 
     public void getSeries(int page, Callback<MovieResponse> callback) {
         api.getPopularSeries(page).enqueue(callback);
+    }
+
+    public void searchMovies(String query, Callback<MovieResponse> callback) {
+        api.searchMovies(query).enqueue(callback);
+    }
+
+    public void searchSeries(String query, Callback<MovieResponse> callback) {
+        api.searchSeries(query).enqueue(callback);
     }
 
     public void getMovieDetail(int id, Callback<MovieDetail> callback) {

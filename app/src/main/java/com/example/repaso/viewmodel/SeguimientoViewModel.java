@@ -10,6 +10,7 @@ import com.example.repaso.model.Seguimiento;
 import com.example.repaso.model.MovieResponse;
 import com.example.repaso.model.MovieDetail;
 import com.example.repaso.repository.SeguimientoRepository;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -17,13 +18,14 @@ import retrofit2.Callback;
 
 public class SeguimientoViewModel extends AndroidViewModel {
 
-    private SeguimientoRepository repository;
-    private LiveData<List<Seguimiento>> seguimientos;
+    private final SeguimientoRepository repository;
+    private final LiveData<List<Seguimiento>> seguimientos;
+    private final String userId;
 
     public SeguimientoViewModel(@NonNull Application application) {
         super(application);
-        repository = new SeguimientoRepository(application);
-        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        repository = new SeguimientoRepository();
+        userId = FirebaseAuth.getInstance().getUid();
         seguimientos = repository.obtenerTodos(userId);
     }
 
@@ -32,15 +34,15 @@ public class SeguimientoViewModel extends AndroidViewModel {
     }
 
     public LiveData<Seguimiento> getSeguimientoById(int id) {
-        return repository.obtenerPorId(id);
+        return repository.obtenerPorId(userId, id);
     }
 
     public void insertar(Seguimiento s) {
-        repository.insertar(s);
+        repository.insertar(userId, s);
     }
 
     public void eliminar(int id) {
-        repository.eliminar(id);
+        repository.eliminar(userId, id);
     }
 
     public void buscarEnTMDB(String query, String tipo, Callback<MovieResponse> callback) {

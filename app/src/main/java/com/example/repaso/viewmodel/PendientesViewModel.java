@@ -18,7 +18,7 @@ public class PendientesViewModel extends AndroidViewModel {
 
     public PendientesViewModel(@NonNull Application application) {
         super(application);
-        repository = new PendientesRepository(application);
+        repository = new PendientesRepository();
         String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
         pendientes = repository.obtenerTodos(userId);
     }
@@ -28,6 +28,7 @@ public class PendientesViewModel extends AndroidViewModel {
     }
 
     public void eliminar(int id) {
-        repository.eliminar(id);
+        String userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        repository.eliminar(userId, id);
     }
 }

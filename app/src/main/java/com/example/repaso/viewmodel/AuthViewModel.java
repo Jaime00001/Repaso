@@ -56,15 +56,19 @@ public class AuthViewModel extends AndroidViewModel {
         });
     }
 
-    public void register(String email, String password, String confirmPassword) {
+    public void register(String email, String password, String confirmPassword, String username) {
         String error = validateRegister(email, password, confirmPassword);
+        if (username == null || username.trim().isEmpty()) {
+            authState.setValue(AuthState.error("El nombre de usuario es obligatorio."));
+            return;
+        }
         if (error != null) {
             authState.setValue(AuthState.error(error));
             return;
         }
 
         authState.setValue(AuthState.loading());
-        repo.register(email.trim(), password, new AuthRepository.AuthCallback() {
+        repo.register(email.trim(), password, username.trim(), new AuthRepository.AuthCallback() {
             @Override public void onSuccess(FirebaseUser user) {
                 authState.postValue(AuthState.success(user));
             }
