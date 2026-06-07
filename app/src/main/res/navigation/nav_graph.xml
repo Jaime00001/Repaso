@@ -34,6 +34,15 @@
         tools:layout="@layout/fragment_series" />
 
     <fragment
+        android:id="@+id/favoritosFragment"
+        android:name="com.example.repaso.view.FavoritesFragment"
+        android:label="Favoritos"
+        tools:layout="@layout/fragment_favorites">
+        <action android:id="@+id/action_favoritosFragment_to_detallesFragment"
+            app:destination="@id/detallesFragment" />
+    </fragment>
+    
+    <fragment
         android:id="@+id/pendientesFragment"
         android:name="com.example.repaso.view.PendientesFragment"
         android:label="Pendientes"

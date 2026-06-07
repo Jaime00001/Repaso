@@ -9,6 +9,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.SetOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class FirestoreRepository {
 
@@ -57,7 +61,7 @@ public class FirestoreRepository {
                     .document(String.valueOf(seguimiento.id));
         } else {
             ref = db.collection("users").document(uid).collection("seguimientos").document();
-            seguimiento.id = ref.getId().hashCode(); // Generate a hash-based id if not present
+            seguimiento.id = ref.getId().hashCode();
         }
         ref.set(seguimiento);
     }
@@ -85,4 +89,24 @@ public class FirestoreRepository {
         comment.id = ref.getId();
         ref.set(comment);
     }
+
+    public com.google.android.gms.tasks.Task<Void> addFavorite(String uid, com.example.repaso.model.FavoriteItem fav) {
+        fav.setAddedAt(com.google.firebase.Timestamp.now());
+        return db.collection("users").document(uid)
+                .collection("favorites").document(fav.getId())
+                .set(fav, com.google.firebase.firestore.SetOptions.merge());
+    }
+
+    public com.google.android.gms.tasks.Task<Void> removeFavorite(String uid, String mediaId) {
+        return db.collection("users").document(uid)
+                .collection("favorites").document(mediaId)
+                .delete();
+    }
+    public com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> getFavorites(String uid) {
+        return db.collection("users").document(uid)
+                .collection("favorites")
+                .orderBy("addedAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .get();
+    }
+
 }

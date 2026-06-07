@@ -24,7 +24,6 @@
             android:layout_marginEnd="24dp"
             android:textColor="#000000"/>
 
-        <!-- Estado vacÃ­o -->
         <LinearLayout
             android:id="@+id/estadoVacio"
             android:layout_width="match_parent"
@@ -58,7 +57,6 @@
                 android:gravity="center"/>
         </LinearLayout>
 
-        <!-- Lista con contenido -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listaSeguimiento"
             android:layout_width="match_parent"
@@ -67,11 +65,9 @@
             android:layout_marginTop="16dp"
             android:visibility="gone"
             android:clipToPadding="false"
-            android:paddingBottom="80dp"/> <!-- padding for FAB -->
-
+            android:paddingBottom="80dp"/>
     </LinearLayout>
 
-    <!-- BotÃ³n AÃ±adir -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnAnadir"
         android:layout_width="wrap_content"

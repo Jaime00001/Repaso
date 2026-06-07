@@ -16,4 +16,8 @@
         android:icon="@android:drawable/ic_menu_recent_history"
         android:title="Seguimiento" />
 
-</menu>
+    <item
+        android:id="@+id/favoritosFragment"
+        android:icon="@android:drawable/btn_star_big_on"
+        android:title="Favoritos" />
+    </menu>

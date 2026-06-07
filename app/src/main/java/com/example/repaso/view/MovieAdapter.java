@@ -2,6 +2,7 @@ package com.example.repaso.view;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,24 +12,35 @@ import com.example.repaso.databinding.ItemMovieBinding;
 import com.example.repaso.model.Movie;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.Holder> {
 
     public interface OnClick { void onClick(Movie m); }
     public interface OnAddClick { void onAdd(Movie m); }
+    public interface OnFavoriteClick { void onToggleFavorite(Movie m, boolean isCurrentlyFavorite); }
 
     private List<Movie> list = new ArrayList<>();
+    private Set<String> favoriteIds = new HashSet<>();
     private OnClick listener;
     private OnAddClick addListener;
+    private OnFavoriteClick favoriteListener;
 
-    public MovieAdapter(OnClick listener, OnAddClick addListener) {
+    public MovieAdapter(OnClick listener, OnAddClick addListener, OnFavoriteClick favoriteListener) {
         this.listener = listener;
         this.addListener = addListener;
+        this.favoriteListener = favoriteListener;
     }
 
     public void setItems(List<Movie> movies) {
-        list = movies;
+        this.list = movies;
+        notifyDataSetChanged();
+    }
+
+    public void setFavoriteIds(Set<String> ids) {
+        this.favoriteIds = ids != null ? ids : new HashSet<>();
         notifyDataSetChanged();
     }
 
@@ -61,9 +73,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.Holder> {
         }
 
         String imgPath = m.backdrop_path != null ? m.backdrop_path : m.poster_path;
-
         boolean isWifiOnly = com.example.repaso.repository.PreferencesManager.getInstance().isWifiOnly();
-
         if (isWifiOnly) {
             Glide.with(h.itemView.getContext())
                     .load(android.R.drawable.ic_menu_gallery)
@@ -74,8 +84,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.Holder> {
                     .into(h.binding.portadaItem);
         }
 
+        // Click listeners
         h.itemView.setOnClickListener(v -> listener.onClick(m));
         h.binding.btnAnadirPendiente.setOnClickListener(v -> addListener.onAdd(m));
+
+        // Favorite button state
+        boolean isFav = favoriteIds.contains(String.valueOf(m.id));
+        int starRes = isFav ? android.R.drawable.btn_star_big_on : android.R.drawable.btn_star_big_off;
+        h.binding.btnFavorito.setImageResource(starRes);
+        h.binding.btnFavorito.setOnClickListener(v -> {
+            if (favoriteListener != null) {
+                favoriteListener.onToggleFavorite(m, isFav);
+            }
+        });
     }
 
     @Override
@@ -89,3 +110,5 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.Holder> {
         }
     }
 }
+
+

@@ -21,13 +21,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import android.app.DatePickerDialog;
+import java.util.Calendar;
+import java.util.Date;
+import com.google.firebase.Timestamp;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import java.text.SimpleDateFormat;
 
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding binding;
     private AuthViewModel viewModel;
+    private Date selectedDate;
     private GoogleSignInClient googleClient;
     private ActivityResultLauncher<Intent> googleLauncher;
 
@@ -94,23 +100,57 @@ public class RegisterFragment extends Fragment {
     }
 
     private void setupListeners() {
+        binding.dateEditText.setOnClickListener(v -> {
+            DatePickerDialog dpd = new DatePickerDialog(requireContext(), (view, year, month, dayOfMonth) -> {
+                Calendar cal = Calendar.getInstance();
+                cal.set(year, month, dayOfMonth);
+                selectedDate = cal.getTime();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                binding.dateEditText.setText(sdf.format(selectedDate));
+            }, 2010, 0, 1);
+            dpd.show();
+        });
+
         binding.registerButton.setOnClickListener(v -> {
             String username = binding.usernameEditText.getText().toString();
             String email = binding.emailEditText.getText().toString();
             String pass = binding.passwordEditText.getText().toString();
             String confirmPass = binding.confirmPasswordEditText.getText().toString();
-            viewModel.register(email, pass, confirmPass, username);
+
+            if (selectedDate == null) {
+                Toast.makeText(getContext(), "Seleccione la fecha de nacimiento.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            proceedRegistration(username, email, pass, confirmPass);
         });
+
 
         binding.googleSignInButton.setOnClickListener(v -> {
             Intent signInIntent = googleClient.getSignInIntent();
             googleLauncher.launch(signInIntent);
         });
 
-        binding.goToLoginText.setOnClickListener(v -> 
-            Navigation.findNavController(v).popBackStack()
-        );
+                binding.goToLoginText.setOnClickListener(v ->
+                    Navigation.findNavController(v).popBackStack()
+                );
     }
+    private void proceedRegistration(String username, String email, String pass, String confirmPass) {
+        Timestamp ts = new Timestamp(selectedDate);
+        Calendar today = Calendar.getInstance();
+        Calendar birth = Calendar.getInstance();
+        birth.setTime(selectedDate);
+        int age = today.get(Calendar.YEAR) - birth.get(Calendar.YEAR);
+        if (today.get(Calendar.DAY_OF_YEAR) < birth.get(Calendar.DAY_OF_YEAR)) {
+            age--;
+        }
+        String mode = (age <= 12) ? "kids" : "adult";
+        viewModel.register(email, pass, confirmPass, username, ts, mode);
+    }
+
+
+
+
 
     private void goToMain() {
         startActivity(new Intent(requireActivity(), MainActivity.class));

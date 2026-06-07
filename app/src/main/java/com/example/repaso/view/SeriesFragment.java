@@ -18,7 +18,11 @@ import com.example.repaso.R;
 import com.example.repaso.databinding.FragmentSeriesBinding;
 import com.example.repaso.model.Pendiente;
 import com.example.repaso.repository.PendientesRepository;
+import com.example.repaso.viewmodel.FavoritesViewModel;
+import com.example.repaso.model.FavoriteItem;
 import com.example.repaso.viewmodel.SeriesViewModel;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SeriesFragment extends Fragment {
 
@@ -39,6 +43,7 @@ public class SeriesFragment extends Fragment {
         pendientesRepository = new PendientesRepository();
 
         binding.listaVista.setLayoutManager(new LinearLayoutManager(getContext()));
+        FavoritesViewModel favoritesViewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
         adapter = new MovieAdapter(
                 movie -> openDetail(movie.id),
                 movie -> {
@@ -49,9 +54,25 @@ public class SeriesFragment extends Fragment {
                     p.tipo = "tv";
                     p.userId = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
                     pendientesRepository.insertar(p.userId, p);
-                    Toast.makeText(requireContext(), "AÃ±adido a pendientes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), "Añadido a pendientes", Toast.LENGTH_SHORT).show();
+                },
+                (movie, isFav) -> {
+                    if (isFav) {
+                        favoritesViewModel.removeFavorite(String.valueOf(movie.id));
+                    } else {
+                        FavoriteItem item = new FavoriteItem(String.valueOf(movie.id), movie.getDisplayTitle(), "tv", movie.backdrop_path != null ? movie.backdrop_path : movie.poster_path);
+                        favoritesViewModel.addFavorite(item);
+                    }
                 }
         );
+        favoritesViewModel.getFavorites().observe(getViewLifecycleOwner(), favList -> {
+            Set<String> ids = new HashSet<>();
+            for (FavoriteItem fi : favList) {
+                ids.add(fi.getId());
+            }
+            adapter.setFavoriteIds(ids);
+        });
+        favoritesViewModel.loadFavorites();
         binding.listaVista.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(SeriesViewModel.class);

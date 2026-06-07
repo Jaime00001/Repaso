@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import com.example.repaso.repository.AuthRepository;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Pattern;
 
@@ -56,7 +57,7 @@ public class AuthViewModel extends AndroidViewModel {
         });
     }
 
-    public void register(String email, String password, String confirmPassword, String username) {
+    public void register(String email, String password, String confirmPassword, String username, Timestamp dateOfBirth, String mode) {
         String error = validateRegister(email, password, confirmPassword);
         if (username == null || username.trim().isEmpty()) {
             authState.setValue(AuthState.error("El nombre de usuario es obligatorio."));
@@ -68,7 +69,7 @@ public class AuthViewModel extends AndroidViewModel {
         }
 
         authState.setValue(AuthState.loading());
-        repo.register(email.trim(), password, username.trim(), new AuthRepository.AuthCallback() {
+        repo.register(email.trim(), password, username.trim(), dateOfBirth, mode, new AuthRepository.AuthCallback() {
             @Override public void onSuccess(FirebaseUser user) {
                 authState.postValue(AuthState.success(user));
             }
@@ -77,6 +78,7 @@ public class AuthViewModel extends AndroidViewModel {
             }
         });
     }
+
 
     public void loginWithGoogle(String idToken) {
         if (idToken == null || idToken.trim().isEmpty()) {

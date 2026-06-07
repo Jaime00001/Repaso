@@ -10,7 +10,6 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface TMDBApi {
-
     @GET("movie/popular")
     Call<MovieResponse> getPopularMovies(@Query("page") int page);
 
@@ -34,4 +33,13 @@ public interface TMDBApi {
 
     @GET("search/tv")
     Call<MovieResponse> searchSeries(@Query("query") String query);
+    @GET("discover/movie")
+    Call<MovieResponse> getCartoonMovies(
+            @Query("page") int page,
+            @Query("with_genres") String genre);
+
+    @GET("discover/tv")
+    Call<MovieResponse> getCartoonSeries(
+            @Query("page") int page,
+            @Query("with_genres") String genre);
 }

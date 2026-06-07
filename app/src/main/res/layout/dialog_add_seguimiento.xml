@@ -23,11 +23,9 @@
             android:id="@+id/editTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="TÃ­tulo de la serie o pelÃ­cula" />
+            android:hint="Titulo de la serie o pelicula" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- La fecha se puede generar automÃ¡ticamente, o aÃ±adir un input si se requiere.
-         Para la simplicidad visual de aÃ±adir seguimiento, usaremos un input de fecha o automÃ¡tico -->
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

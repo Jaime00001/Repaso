@@ -21,11 +21,27 @@ public class Repository {
     }
 
     public void getMovies(int page, Callback<MovieResponse> callback) {
-        api.getPopularMovies(page).enqueue(callback);
+        getMovies(page, false, callback);
+    }
+    public void getMovies(int page, boolean kidsMode, Callback<MovieResponse> callback) {
+        if (kidsMode) {
+            api.getCartoonMovies(page, "16").enqueue(callback);
+        } else {
+            api.getPopularMovies(page).enqueue(callback);
+        }
     }
 
     public void getSeries(int page, Callback<MovieResponse> callback) {
-        api.getPopularSeries(page).enqueue(callback);
+        getSeries(page, false, callback);
+    }
+
+
+    public void getSeries(int page, boolean kidsMode, Callback<MovieResponse> callback) {
+        if (kidsMode) {
+            api.getCartoonSeries(page, "16").enqueue(callback);
+        } else {
+            api.getPopularSeries(page).enqueue(callback);
+        }
     }
 
     public void searchMovies(String query, Callback<MovieResponse> callback) {

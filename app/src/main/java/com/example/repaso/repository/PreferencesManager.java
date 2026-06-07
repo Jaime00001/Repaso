@@ -10,8 +10,6 @@ public class PreferencesManager {
     private static final String KEY_LANGUAGE = "language";
     private static final String KEY_WIFI_ONLY = "wifi_only";
     private static final String KEY_DARK_MODE = "dark_mode";
-
-    // Default values
     public static final String DEFAULT_LANGUAGE = "es";
     public static final boolean DEFAULT_WIFI_ONLY = false;
     public static final boolean DEFAULT_DARK_MODE = false;

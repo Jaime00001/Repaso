@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             NavController navController = navHostFragment.getNavController();
 
             AppBarConfiguration appBarConfig = new AppBarConfiguration.Builder(
-                    R.id.menuFragment, R.id.pendientesFragment, R.id.seguimientoFragment
+                    R.id.menuFragment, R.id.pendientesFragment, R.id.seguimientoFragment, R.id.favoritosFragment
             ).build();
             NavigationUI.setupActionBarWithNavController(this, navController, appBarConfig);
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                     int id = destination.getId();
-                    if (id == R.id.menuFragment || id == R.id.pendientesFragment || id == R.id.seguimientoFragment) {
+                    if (id == R.id.menuFragment || id == R.id.pendientesFragment || id == R.id.seguimientoFragment || id == R.id.favoritosFragment) {
                         binding.bottomNav.setVisibility(View.VISIBLE);
                     } else {
                         binding.bottomNav.setVisibility(View.GONE);

@@ -24,12 +24,12 @@ public class AuthRepository {
                 .addOnFailureListener(e -> callback.onError(mapError(e)));
     }
 
-    public void register(String email, String password, String username, AuthCallback callback) {
+    public void register(String email, String password, String username, com.google.firebase.Timestamp dateOfBirth, String mode, AuthCallback callback) {
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(result -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null) {
-                        com.example.repaso.model.UserProfile profile = new com.example.repaso.model.UserProfile(user.getUid(), username, email);
+                        com.example.repaso.model.UserProfile profile = new com.example.repaso.model.UserProfile(user.getUid(), username, email, dateOfBirth, mode);
                         new FirestoreRepository().saveUserProfile(profile);
                     }
                     callback.onSuccess(user);
@@ -43,11 +43,13 @@ public class AuthRepository {
                 .addOnSuccessListener(result -> {
                     FirebaseUser user = auth.getCurrentUser();
                     if (user != null) {
-                        com.example.repaso.model.UserProfile profile = new com.example.repaso.model.UserProfile(
-                                user.getUid(),
-                                user.getDisplayName() != null ? user.getDisplayName() : "Usuario de Google",
-                                user.getEmail()
-                        );
+            com.example.repaso.model.UserProfile profile = new com.example.repaso.model.UserProfile(
+                user.getUid(),
+                user.getDisplayName() != null ? user.getDisplayName() : "Usuario de Google",
+                user.getEmail(),
+                null,
+                "adult"
+            );
                         new FirestoreRepository().saveUserProfile(profile);
                     }
                     callback.onSuccess(user);
